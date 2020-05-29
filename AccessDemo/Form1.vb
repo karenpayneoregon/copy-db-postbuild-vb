@@ -32,6 +32,11 @@ Public Class Form1
     End Sub
 
     Private Sub Form1_Shown(sender As Object, e As EventArgs) Handles Me.Shown
+
+        If Not FileHelper.Exists Then
+            FileHelper.CopyDatabase(True)
+        End If
+
         customerBindingSource.DataSource = DataOperations.LoadCustomers()
         DataGridView1.DataSource = customerBindingSource
     End Sub

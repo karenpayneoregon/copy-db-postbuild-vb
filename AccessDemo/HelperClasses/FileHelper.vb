@@ -6,9 +6,31 @@ Namespace HelperClasses
         Inherits DatabaseException
 
         Private Shared databaseFile As New FileInfo(FileName)
+        ''' <summary>
+        ''' Safe copy of database
+        ''' </summary>
+        ''' <returns></returns>
         Public Shared ReadOnly Property FileName() As String
             Get
                 Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Database", "Database1.accdb")
+            End Get
+        End Property
+        ''' <summary>
+        ''' Database name to use in application folder
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared ReadOnly Property ProductionDatabaseFileName() As String
+            Get
+                Return Path.Combine(AppDomain.CurrentDomain.BaseDirectory, databaseFile.Name)
+            End Get
+        End Property
+        ''' <summary>
+        ''' Determines if the database exists in the application folder
+        ''' </summary>
+        ''' <returns></returns>
+        Public Shared ReadOnly Property Exists() As Boolean
+            Get
+                Return File.Exists(ProductionDatabaseFileName)
             End Get
         End Property
         ''' <summary>
@@ -18,13 +40,13 @@ Namespace HelperClasses
         Public Shared Sub CopyDatabase(Optional overwrite As Boolean = False)
             mHasException = True
 
-            Dim destinationPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, databaseFile.Name)
+            'Dim destinationPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, databaseFile.Name)
 
             Try
 
-                If File.Exists(destinationPath) Then
+                If File.Exists(ProductionDatabaseFileName) Then
                     If overwrite Then
-                        File.Delete(destinationPath)
+                        File.Delete(ProductionDatabaseFileName)
                     Else
                         mHasException = False
                         Exit Sub
@@ -32,7 +54,7 @@ Namespace HelperClasses
 
                 End If
 
-                databaseFile.CopyTo(destinationPath)
+                databaseFile.CopyTo(ProductionDatabaseFileName)
 
                 mHasException = False
 
