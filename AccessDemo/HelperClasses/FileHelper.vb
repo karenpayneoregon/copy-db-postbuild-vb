@@ -40,8 +40,6 @@ Namespace HelperClasses
         Public Shared Sub CopyDatabase(Optional overwrite As Boolean = False)
             mHasException = True
 
-            'Dim destinationPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, databaseFile.Name)
-
             Try
 
                 If File.Exists(ProductionDatabaseFileName) Then
